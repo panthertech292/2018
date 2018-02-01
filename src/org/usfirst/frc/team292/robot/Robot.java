@@ -7,13 +7,14 @@
 
 package org.usfirst.frc.team292.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team292.robot.commands.ExampleCommand;
-import org.usfirst.frc.team292.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team292.robot.commands.*;
+import org.usfirst.frc.team292.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,12 +24,16 @@ import org.usfirst.frc.team292.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static final ExampleSubsystem kExampleSubsystem
-			= new ExampleSubsystem();
-	public static OI m_oi;
+	public static OI oi;
+	public static Drivetrain drivetrain;
+	public static Lift lift;
+	public static Grabber grabber;
+	public static Tilt tilt;
+	public static Navigation navigation;
 
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+	Command autonomousCommand;
+	SendableChooser<Command> autonomousChooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -36,10 +41,20 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
+
+		navigation = new Navigation();
+		grabber = new Grabber();
+		tilt = new Tilt();
+		drivetrain = new Drivetrain();
+		drivetrain.resetDistance();
+		lift = new Lift();
+		oi = new OI();
+		autonomousChooser.addDefault("Default Auto", new LeftSwitchLeft());
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		SmartDashboard.putData("Auto mode", autonomousChooser);
+		SmartDashboard.putData(drivetrain);
+		SmartDashboard.putData(lift);
+		
 	}
 
 	/**
@@ -70,7 +85,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		autonomousCommand = autonomousChooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -80,8 +95,8 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		if (autonomousCommand != null) {
+			autonomousCommand.start();
 		}
 	}
 
@@ -99,9 +114,10 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
 		}
+		Scheduler.getInstance().add(new DriveTeleop());
 	}
 
 	/**
