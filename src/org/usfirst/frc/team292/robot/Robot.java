@@ -7,13 +7,12 @@
 
 package org.usfirst.frc.team292.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team292.robot.commands.*;
+import org.usfirst.frc.team292.robot.commands.drive.DriveTeleop;
 import org.usfirst.frc.team292.robot.subsystems.*;
 
 /**
@@ -30,16 +29,16 @@ public class Robot extends TimedRobot {
 	public static Grabber grabber;
 	public static Tilt tilt;
 	public static Navigation navigation;
-
+	public static Winch winch;
 
 	Command autonomousCommand;
-	SendableChooser<Command> autonomousChooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
+
 	public void robotInit() {
 
 		navigation = new Navigation();
@@ -49,14 +48,18 @@ public class Robot extends TimedRobot {
 		drivetrain.resetDistance();
 		lift = new Lift();
 		oi = new OI();
-		autonomousChooser.addDefault("Default Auto", new LeftSwitchLeft());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", autonomousChooser);
+
+		
+		
 		SmartDashboard.putData(drivetrain);
 		SmartDashboard.putData(lift);
+		SmartDashboard.putData(grabber);
+		SmartDashboard.putData(winch);
 		
 	}
-
+	public void robotPeriodic() { 
+	}
+	
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
 	 * You can use it to reset any subsystem information you want to clear when
@@ -85,7 +88,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = autonomousChooser.getSelected();
+		autonomousCommand = oi.auto();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
