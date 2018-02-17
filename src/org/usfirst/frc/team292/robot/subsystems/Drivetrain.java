@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -37,27 +38,25 @@ public class Drivetrain extends Subsystem {
 		drive = new DifferentialDrive(leftMotors, rightMotors);
 		
 		//Only two motors will have encoders
-		frontRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-		frontLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		rearRightMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
 		rearLeftMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+		rearRightMotor.setSensorPhase(false);
+		rearLeftMotor.setSensorPhase(true);
 		drive.setDeadband(0.1);
 	}
 	
 	public void resetDistance() {
-    	frontLeftMotor.setSelectedSensorPosition(0, 0, 0);
-    	frontRightMotor.setSelectedSensorPosition(0, 0, 0);
     	rearLeftMotor.setSelectedSensorPosition(0, 0, 0);
     	rearRightMotor.setSelectedSensorPosition(0, 0, 0);
 	}
 
 	public double getDistance() {
+		SmartDashboard.putNumber("Left Ticks", rearLeftMotor.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Right Ticks", rearRightMotor.getSelectedSensorPosition(0));
 		double total = 0;
-		total += frontLeftMotor.getSelectedSensorPosition(0) / ticksPerInch;
-		total += frontRightMotor.getSelectedSensorPosition(0) / ticksPerInch;
 		total += rearLeftMotor.getSelectedSensorPosition(0) / ticksPerInch;
 		total += rearRightMotor.getSelectedSensorPosition(0) / ticksPerInch;
-		return total / 4.0;
+		return total / 2.0;
 	}
 	
 	public void tankDrive(double leftPercentage, double rightPercentage){

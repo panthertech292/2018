@@ -47,17 +47,21 @@ public class Robot extends TimedRobot {
 		drivetrain = new Drivetrain();
 		drivetrain.resetDistance();
 		lift = new Lift();
+		winch = new Winch();
 		oi = new OI();
+		oi.addAutoOptions();
 
-		
-		
 		SmartDashboard.putData(drivetrain);
 		SmartDashboard.putData(lift);
+		SmartDashboard.putData(tilt);
 		SmartDashboard.putData(grabber);
 		SmartDashboard.putData(winch);
-		
 	}
+	
 	public void robotPeriodic() { 
+		SmartDashboard.putNumber("Lift Height", lift.getHeight());
+		SmartDashboard.putNumber("Distance Driven", drivetrain.getDistance());
+		SmartDashboard.putNumber("Gyro Angle", navigation.getAngle());
 	}
 	
 	/**

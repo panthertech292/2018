@@ -15,13 +15,12 @@ package org.usfirst.frc.team292.robot;
  */
 public class RobotMap {
 	//Talons
-	public static int frontRightMotor = 2;
-	public static int frontLeftMotor = 6;
-	public static int rearRightMotor = 3; //not right port
-	public static int rearLeftMotor = 1; //not right port
+	public static int frontRightMotor = 1;
+	public static int frontLeftMotor = 2;
+	public static int rearRightMotor = 3; 
+	public static int rearLeftMotor = 4; 
 	public static int liftMotor = 5;
-	public static int winchMotor1 = 4;
-	public static int winchMotor2 = 0;
+	public static int winchMotor = 6;
 	
 	//Controls
 	public static int driveController = 0;

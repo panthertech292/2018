@@ -7,14 +7,10 @@
 
 package org.usfirst.frc.team292.robot;
 
-
-import org.usfirst.frc.team292.robot.commands.auto.Score;
-import org.usfirst.frc.team292.robot.commands.grabber.Grab;
-import org.usfirst.frc.team292.robot.commands.grabber.Release;
-import org.usfirst.frc.team292.robot.commands.grabber.TiltDown;
-import org.usfirst.frc.team292.robot.commands.grabber.TiltUp;
-import org.usfirst.frc.team292.robot.commands.winch.WinchDown;
-import org.usfirst.frc.team292.robot.commands.winch.WinchUp;
+import org.usfirst.frc.team292.robot.commands.auto.*;
+import org.usfirst.frc.team292.robot.commands.grabber.*;
+import org.usfirst.frc.team292.robot.commands.lift.*;
+import org.usfirst.frc.team292.robot.commands.winch.*;
 import org.usfirst.frc.team292.robot.triggers.XboxTrigger;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -31,50 +27,60 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class OI {
 	public XboxController driveController;
 	public XboxController operController;
-	
+
 	private SendableChooser<Command> autonomousChooser = new SendableChooser<>();
 	private SendableChooser<String> positionChooser = new SendableChooser<>();
-	
-	
-	
+
 	public OI() {
-		SmartDashboard.putData("Auto mode", auto());
 		driveController = new XboxController(RobotMap.driveController);
 		operController = new XboxController(RobotMap.operController);
-		
-		
+
+		JoystickButton button1 = new JoystickButton(operController, 1);
+		button1.whileHeld(new FloorLift());
+
+		JoystickButton button2 = new JoystickButton(operController, 2);
+		button2.whileHeld(new SwitchLift());
+
+		JoystickButton button8 = new JoystickButton(operController, 8);
+		button8.whileHeld(new ScaleLift());
+
 		JoystickButton button3 = new JoystickButton(operController, 3);
 		button3.whileHeld(new WinchUp());
-		
+
 		JoystickButton button4 = new JoystickButton(operController, 4);
 		button4.whileHeld(new WinchDown());
-		
+
 		JoystickButton button5 = new JoystickButton(operController, 5);
 		button5.whileHeld(new TiltDown());
-		
+
 		JoystickButton button6 = new JoystickButton(operController, 6);
 		button6.whileHeld(new TiltUp());
-		
+
 		XboxTrigger leftTrigger = new XboxTrigger(operController, Hand.kLeft);
 		leftTrigger.whileHeld(new Release());
-		
+
 		XboxTrigger rightTrigger = new XboxTrigger(operController, Hand.kRight);
 		rightTrigger.whileHeld(new Grab());
-		
-		autonomousChooser.addDefault("Score", new Score());
-		
-		positionChooser.addObject("Left", "Left");
-		positionChooser.addObject("Middle", "Middle");
-		positionChooser.addObject("Right", "Right");
-		
-	}
-	public String position() {
-		return positionChooser.getSelected();
 	}
 	
-	public Command auto(){
+	public void addAutoOptions() {
+		autonomousChooser.addDefault("Score", new Score());
+		SmartDashboard.putData("Auto mode", autonomousChooser);
+
+		positionChooser.addDefault("Left", "Left");
+		positionChooser.addObject("Middle", "Middle");
+		positionChooser.addObject("Right", "Right");
+		SmartDashboard.putData("Starting Position", positionChooser);
+	}
+
+	public String position() {
+		String position = positionChooser.getSelected();
+		if(position == null) position = "";
+		return position;
+	}
+
+	public Command auto() {
 		return autonomousChooser.getSelected();
 	}
-		
-}
 
+}

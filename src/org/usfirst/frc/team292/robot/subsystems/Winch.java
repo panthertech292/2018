@@ -12,18 +12,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Winch extends Subsystem {
-	private WPI_TalonSRX winchMotor1;
-	private WPI_TalonSRX winchMotor2;
-    private SpeedControllerGroup winchMotors;
+	private WPI_TalonSRX winchMotor;
     
     public Winch(){
-    	winchMotor1 = new WPI_TalonSRX(RobotMap.winchMotor1);
-    	winchMotor2 = new WPI_TalonSRX(RobotMap.winchMotor2);
-    	winchMotors = new SpeedControllerGroup(winchMotor1, winchMotor2);
+    	winchMotor = new WPI_TalonSRX(RobotMap.winchMotor);
+
     }
     
     public void setSpeed(double percentage){
-    	winchMotors.set(percentage);
+    	winchMotor.set(percentage);
     }
     
 
