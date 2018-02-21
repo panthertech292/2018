@@ -21,9 +21,9 @@ public class DriveTeleop extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drivetrain.tankDrive(-Robot.oi.driveController.getY(Hand.kLeft), -Robot.oi.driveController.getY(Hand.kRight));
-    	SmartDashboard.putNumber("Left Joystick", Robot.oi.driveController.getY(Hand.kLeft));
-    	SmartDashboard.putNumber("Right Joystick", Robot.oi.driveController.getY(Hand.kRight));
+    	Robot.drivetrain.tankDrive(Robot.oi.getLeftSide(), Robot.oi.getRightSide());
+    	SmartDashboard.putNumber("Left Joystick", Robot.oi.getLeftSide());
+    	SmartDashboard.putNumber("Right Joystick", Robot.oi.getRightSide());
     }
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {

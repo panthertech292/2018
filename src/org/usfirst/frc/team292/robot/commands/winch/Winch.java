@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class WinchDown extends Command {
+public class Winch extends Command {
 
-    public WinchDown() {
+    public Winch() {
         requires(Robot.winch);
     }
 
@@ -19,7 +19,7 @@ public class WinchDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.winch.setSpeed(-1.0);
+    	Robot.winch.setSpeed(1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()

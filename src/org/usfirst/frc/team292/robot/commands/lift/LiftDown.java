@@ -19,7 +19,7 @@ public class LiftDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.lift.setSpeed(-1.0);
+    	Robot.lift.setSpeed(-.25);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -29,7 +29,7 @@ public class LiftDown extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.lift.setSpeed(0);
+    	Robot.lift.setSpeed(0.1);
     }
 
     // Called when another command which requires one or more of the same

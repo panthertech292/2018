@@ -7,16 +7,16 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class LiftStop extends InstantCommand {
+public class LiftSustain extends InstantCommand {
 
-    public LiftStop() {
+    public LiftSustain() {
         super();
         requires(Robot.lift);
     }
 
     // Called once when the command executes
     protected void initialize() {
-    	Robot.lift.setSpeed(0);
+    	Robot.lift.setSpeed(0.05);
     }
 
 }

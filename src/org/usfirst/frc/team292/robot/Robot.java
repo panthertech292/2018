@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team292.robot.commands.drive.DriveTeleop;
+import org.usfirst.frc.team292.robot.commands.lift.ManualLift;
 import org.usfirst.frc.team292.robot.subsystems.*;
 
 /**
@@ -125,6 +126,7 @@ public class Robot extends TimedRobot {
 			autonomousCommand.cancel();
 		}
 		Scheduler.getInstance().add(new DriveTeleop());
+		Scheduler.getInstance().add(new ManualLift());
 	}
 
 	/**

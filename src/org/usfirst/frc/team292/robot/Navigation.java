@@ -11,18 +11,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Navigation  {
 
     private AHRS gyro;
+    private double startAngle;
     
     public Navigation() {
     	gyro = new AHRS(I2C.Port.kOnboard);
-    	SmartDashboard.putNumber("Angle", gyro.getAngle());
+    	startAngle = getRawAngle();
     }
     
-    public double getAngle() {
+    private double getRawAngle() {
     	return gyro.getAngle();
     }
     
+    public double getAngle() {
+    	return getRawAngle() - startAngle;
+    }
+    
     public void reset() {
-    	gyro.reset();
+    	startAngle = getRawAngle();
     }
 }
 

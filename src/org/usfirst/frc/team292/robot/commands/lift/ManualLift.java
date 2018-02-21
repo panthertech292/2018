@@ -1,16 +1,17 @@
-package org.usfirst.frc.team292.robot.commands.winch;
+package org.usfirst.frc.team292.robot.commands.lift;
 
 import org.usfirst.frc.team292.robot.Robot;
+import org.usfirst.frc.team292.robot.subsystems.Lift;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class WinchUp extends Command {
+public class ManualLift extends Command {
 
-    public WinchUp() {
-        requires(Robot.winch);
+    public ManualLift() {
+        requires(Robot.lift);
     }
 
     // Called just before this Command runs the first time
@@ -19,7 +20,7 @@ public class WinchUp extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.winch.setSpeed(1.0);
+    	Robot.lift.setManualSpeed(Robot.oi.getLift());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -29,7 +30,7 @@ public class WinchUp extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.winch.setSpeed(0);
+    	Robot.lift.setSpeed(Lift.sustainSpeed);
     }
 
     // Called when another command which requires one or more of the same

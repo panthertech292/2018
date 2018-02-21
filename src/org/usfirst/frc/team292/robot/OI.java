@@ -8,6 +8,7 @@
 package org.usfirst.frc.team292.robot;
 
 import org.usfirst.frc.team292.robot.commands.auto.*;
+import org.usfirst.frc.team292.robot.commands.drive.DriveForward;
 import org.usfirst.frc.team292.robot.commands.grabber.*;
 import org.usfirst.frc.team292.robot.commands.lift.*;
 import org.usfirst.frc.team292.robot.commands.winch.*;
@@ -25,8 +26,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-	public XboxController driveController;
-	public XboxController operController;
+	private XboxController driveController;
+	private XboxController operController;
 
 	private SendableChooser<Command> autonomousChooser = new SendableChooser<>();
 	private SendableChooser<String> positionChooser = new SendableChooser<>();
@@ -36,35 +37,46 @@ public class OI {
 		operController = new XboxController(RobotMap.operController);
 
 		JoystickButton button1 = new JoystickButton(operController, 1);
-		button1.whileHeld(new FloorLift());
+		button1.whenPressed(new FloorLift());
 
 		JoystickButton button2 = new JoystickButton(operController, 2);
-		button2.whileHeld(new SwitchLift());
-
-		JoystickButton button8 = new JoystickButton(operController, 8);
-		button8.whileHeld(new ScaleLift());
+		button2.whenPressed(new SwitchLift());
 
 		JoystickButton button3 = new JoystickButton(operController, 3);
-		button3.whileHeld(new WinchUp());
+		button3.whileHeld(new Winch());
 
 		JoystickButton button4 = new JoystickButton(operController, 4);
-		button4.whileHeld(new WinchDown());
+		button4.whenPressed(new ScaleLift());
 
 		JoystickButton button5 = new JoystickButton(operController, 5);
-		button5.whileHeld(new TiltDown());
+		button5.whenPressed(new TiltDown());
 
 		JoystickButton button6 = new JoystickButton(operController, 6);
-		button6.whileHeld(new TiltUp());
+		button6.whenPressed(new TiltUp());
 
 		XboxTrigger leftTrigger = new XboxTrigger(operController, Hand.kLeft);
-		leftTrigger.whileHeld(new Release());
+		leftTrigger.whenPressed(new Release());
 
 		XboxTrigger rightTrigger = new XboxTrigger(operController, Hand.kRight);
-		rightTrigger.whileHeld(new Grab());
+		rightTrigger.whenPressed(new Grab());
+	}
+	
+	public double getLift() {
+		return -operController.getY(Hand.kRight);
+	}
+	
+	public double getRightSide() {
+		return -driveController.getY(Hand.kRight);
+	}
+	
+	public double getLeftSide() {
+		return -driveController.getY(Hand.kLeft);
 	}
 	
 	public void addAutoOptions() {
 		autonomousChooser.addDefault("Score", new Score());
+		autonomousChooser.addObject("Drive Forward", new DriveForward(20));
+		autonomousChooser.addObject("Middle Test", new MiddleSwitchLeft());
 		SmartDashboard.putData("Auto mode", autonomousChooser);
 
 		positionChooser.addDefault("Left", "Left");
